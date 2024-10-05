@@ -725,11 +725,7 @@ section[anim-sect] {
 			  }
 
 
-				let roadPlane = new createPlane();
-				animPlane();
-				adjustPlane();
-
-			  function animPlane(){
+			  function updatePlane(){
 					//env.roadPath.rotation.x += (Math.PI/2)/15
 					//env.roadPath.rotation.z += (Math.PI/2)/15
 			  	//env.roadPath.position.y -= 1/30;
@@ -757,6 +753,8 @@ section[anim-sect] {
 				    	car.playSpeedbySound();	 
 
 			  	}
+
+
 			  	playCarSpeedby(env.carObj, 0)
 			  	playCarSpeedby(env.carObj2)
 			  	playCarSpeedby(env.carObj3)
@@ -768,12 +766,43 @@ section[anim-sect] {
 					camera.position.x = env.carObj.position.x +trackWidth * 1; 
 					camera.position.z = env.carObj.position.z + trackWidth * 1;
 				  }
-
-				  requestAnimationFrame(animPlane);
 				} 
+
+				function startTrackSceneAnim(){
+					let stopAnim = false;
+					let frameCount = 0;
+					let fps, fpsInterval, startTime, nowTime, thenTime, elapsedTime;
+
+					fps = 15;
+					fpsInterval = 1000/fps;
+					thenTime = Date.now();
+					startTime = thenTime;
+
+					let trackSceneAnim = function(){
+					  requestAnimationFrame(trackSceneAnim);
+
+					  nowTime = Date.now();
+					  elapsedTime = nowTime - thenTime;
+
+					  if(elapsedTime - fpsInterval) {
+					  	thenTime = nowTime - (elapsedTime % fpsInterval);
+					  	updatePlane();
+					  }
+					}
+					trackSceneAnim();
+				}
+
+
+
+
+				let roadPlane = new createPlane();
+				startTrackSceneAnim();
+				adjustPlane();
+
 
 				trackScene.position.x -= 4;
 				trackScene.position.z -= 1;
+
 
 
 				skyLine.position.set(env.roadPath.position.x, -0, env.roadPath.position.z); 
