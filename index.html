@@ -666,7 +666,7 @@ section[anim-sect] {
 					this.autoDriveOnPlane = function ( raceCar, whichCar = 1 ) { 
 						raceCar.trackPosCount = raceCar.trackPosCount ?? 0;
 						let iBlue = raceCar.trackPosCount;
-						if ( iBlue === lss ) iBlue = 0; 
+						if ( iBlue >= lss ) iBlue = 0; 
 						
 						if ( iBlue == Math.floor(iBlue)){
 							M3.set( 
@@ -692,7 +692,7 @@ section[anim-sect] {
 								);
 						}
 
-						iBlue += (whichCar == 1 ? 1 : 1.5);
+						iBlue += (whichCar == 1 ? 1.5 * 3 : 1.5 * 4);
 						raceCar.trackPosCount = iBlue;
 					} 
 			  }
@@ -783,8 +783,7 @@ section[anim-sect] {
 				});
 				env.carObj2.traverse((child) => {
 				  if (child.material 
-				  	&& child.material.length > 0) {
-				    child.material = child.material.clone();
+				  	&& child.material.length > 0) { 
 				    child.material.map((mat, matInd)=>{ 
 				    	mat.color.setHex(colors[matInd]);
 				    	if(matInd==4) mat.color.setHex(0x661188); // body
@@ -800,7 +799,7 @@ section[anim-sect] {
 
 	    function driftCar(dir){ 
 	    	if (!env.carObj) return;
-	    	env.carObj.rp = env.carObj.rp ?? 0;
+	    	env.carObj.rp = env.carObj.rp ?? -1;
 	    	if (env.carObj.rp + dir > 0 ) return;
 	    	if (env.carObj.rp + dir < -1 ) return;
 
