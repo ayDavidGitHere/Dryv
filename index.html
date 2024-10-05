@@ -684,7 +684,7 @@ section[anim-sect] {
 						  else
 								raceCar.rotation.y += Math.PI/2;
 
-							let rP = (whichCar == 1 ? 0 : -1.0);
+							let rP = raceCar.rp ?? 0;
 							raceCar.position.set( 
 								points[ iBlue ].x + (0.5+rP) * n[ iBlue ].x + trackPerimeter, 
 								points[ iBlue ].y, 
@@ -798,13 +798,13 @@ section[anim-sect] {
 				});
 			}
 
-	    function driftCar(dir){
-	    	let baseRot = -Math.PI/4.7;
+	    function driftCar(dir){ 
 	    	if (!env.carObj) return;
-	    	if (env.carObj.rotation.y + dir > baseRot + 0.7 ) return;
-	    	if (env.carObj.rotation.y + dir < baseRot - 0.3 ) return;
+	    	env.carObj.rp = env.carObj.rp ?? 0;
+	    	if (env.carObj.rp + dir > 0 ) return;
+	    	if (env.carObj.rp + dir < -1 ) return;
 
-	    	env.carObj.rotation.y += dir;
+	    	env.carObj.rp += dir/5;
 	    }
 
 
