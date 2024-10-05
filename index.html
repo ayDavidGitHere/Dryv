@@ -1,0 +1,831 @@
+<html>
+	<head> 
+		<link rel="icon" type="image/png" sizes="16x16" href="https://avatars.githubusercontent.com/u/71327146?v=4">
+      <link rel="stylesheet" type="text/css" href="./index.css" />
+
+
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+		<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet"> 
+		<link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+		<style>
+
+html {
+  width: auto; 
+}
+body {
+   width: 100%; height:  100%; 
+   margin: 0; padding: 0;
+	background-color: var(--col-primary);
+	font-family: 'Raleway', sans-serif;
+}
+body { 
+	--col-primary: #111111;
+	--col-primary-plus: #222222;
+	--col-primary-plus-blue: #222233;
+	--col-secondary: #eeeeee;
+	--col-accent: blueviolet;
+	--col-accent-2: #221144;
+	--col-accent-3: #eecc44;
+}
+body[light] {
+	--col-primary: #eeeeee;
+	--col-primary-plus: #dddddd;
+	--col-primary-plus-blue: #ddddcc;
+	--col-secondary: #111111;
+	--col-accent: blueviolet;
+}
+body * {
+	color: var(--col-secondary);
+}
+
+
+
+
+
+
+@media only screen and (max-width: 767px) {
+	html { 
+		font-size: 13px;
+	}
+}
+
+
+
+
+
+
+
+
+
+
+header {
+
+}
+header nav {
+	width: 100%;
+	height: 80px;
+	display: flex;
+	box-sizing: border-box;
+	padding: 30px;
+	padding-left: 12.5%;
+	padding-right: 12.5%;
+
+	flex-flow: row wrap;
+	justify-content: space-between; 
+	position: fixed; top: 0px;
+	z-index: 2;
+	background-color: transparent;
+} 
+
+body[footer-in-view] header nav {
+	display: none;
+}
+
+highlight {
+	color: var(--col-accent);
+}
+
+header nav img.nav-logo {
+
+}
+
+header nav .nav-title { 
+	margin-right: 20px;
+}
+
+header nav .nav-links { 
+	flex-grow: 1;
+	flex-shrink: 0;
+	flex-basis: 200px;
+}
+
+header nav .nav-links {
+	margin: 0;
+	padding: 0;
+}
+
+header nav .nav-links li {
+	margin-left: 5px;
+	margin-right: 5px;
+	padding-left: 5px;
+	padding-right: 5px; 
+	padding-bottom: 5px;
+	display: inline-block;
+	list-style: none;
+}
+
+header nav .nav-links li:hover {
+	border-bottom: 2px solid var(--col-accent);
+}
+
+header nav .nav-links li a {
+	text-decoration: none;
+}
+
+
+header nav .nav-right {
+
+}
+
+
+
+
+
+
+section[pg-1] {
+	width: 100%; height: 100%; 
+	display: flex;
+	flex-flow: row wrap;
+	box-sizing: border-box;
+	justify-content: space-between;
+	padding-left: 12.5%;
+	padding-right: 12.5%;
+	padding-top: calc(80px); 
+}
+
+
+section[pg-1] .top-sect {
+	width: 100%; height: 100%;
+	overflow: hidden;
+	box-sizing: border-box;  
+	padding-top: 5%;
+	text-align: center;
+}
+
+section[pg-1] .top-sect .header-text-1{
+	font-size: 3rem;
+	font-weight: bold; 
+	line-height: 2.5rem; 
+	margin: 0;
+	padding: 0;
+	color: var(--col-secondary);
+}
+
+section[pg-1] .top-sect .header-text-2{
+	font-size: 1rem; 
+	font-weight: bold; ;
+	line-height: 2.5rem;
+	margin: 0;
+	padding: 0;
+	opacity: .8;
+	color: var(--col-secondary);
+}
+
+section[pg-1] .top-sect .header-links {
+	margin-top: 40px;
+}
+
+section[pg-1] .top-sect .link-1 {
+	padding: 10px 20px; 
+	background-color: transparent;
+	color: var(--col-secondary);
+	border: 1px solid var(--col-secondary);
+	border-radius: 30px;
+}
+
+section[pg-1] .top-sect .link-2 {
+	padding: 10px 20px;  
+	border-radius: 5px;
+}
+
+section[pg-1] .top-sect .header-links a {
+	text-decoration: none;
+}
+
+section[pg-1] .top-sect .header-links a:hover {
+	color: var(--col-accent);
+	background-color: transparent;
+	border: .3px solid var(--col-accent);
+}
+
+
+
+
+section[anim-sect] {
+	position: absolute;
+	top: 0; left: 0;
+	width: 100%; height: 100%;
+	box-sizing: border-box;
+	background-color: var(--col-accent-2);
+	z-index: -1;
+}
+
+
+		</style>
+	</head>
+	<body>
+		<section anim-sect>
+			
+		</section>
+		<header>
+			<nav>
+			    <img class="nav-logo" src=""></img>
+			    <span class="nav-title">Cars</span>
+			    <ul class="nav-links">
+			        <li><a href="">KyoSera</a></li>
+			        <li><a href="">Mustang</a></li>
+			        <li><a href="">Sonata</a></li>
+			        <li><a href="">Nord</a></li>
+			    </ul>
+			    <div class="nav-right">
+			        <span>Dryv</span>
+			    </div>
+			</nav>
+		</header>
+		<section pg-1>
+		    <div class="top-sect">
+		        <p class="header-text-1">DRYV  <br> COMFORTABLE.</p>
+		        <p class="header-text-2">Cars, vehicles, transport. Everything.</p>
+		        <p class="header-links">
+		            <a class="link-1">Contact now</a> 
+		        </p>
+		    </div> 
+		</section> 
+	</body>
+	<script type="text/javascript"> 
+	let page = document.body;
+	const footer = document.querySelector('footer');
+
+
+	</script>
+
+   <script type="importmap">
+	{
+	  "imports": {
+	    "three": "https://unpkg.com/three@latest/build/three.module.js",
+	    "OrbitControls": "https://unpkg.com/three@latest/examples/jsm/controls/OrbitControls.js",
+	    "OBJLoader": "https://unpkg.com/three@latest/examples/jsm/loaders/OBJLoader.js",
+	    "three/addons/": "https://unpkg.com/three@latest/examples/jsm/"
+	  }
+	}
+   </script>
+	<script type="module">
+	    import * as THREE from 'three';
+	    import { OrbitControls } from 'OrbitControls';
+	    import { OBJLoader } from 'OBJLoader';
+	    import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
+
+	    let scene, camera, renderer, controls;
+
+
+	    let env = {};
+	    window.threejs_env = env;
+	    function init() {
+	      // Scene
+	      scene = new THREE.Scene();
+	      scene.background = new THREE.Color(0x221144); 
+
+	      // Camera
+	      camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+	      camera.position.z = 5;
+	      camera.position.x += 15;
+	      camera.position.z += 14;
+
+	      // Renderer
+	      renderer = new THREE.WebGLRenderer({ antialias: true });
+	      renderer.setSize(window.innerWidth, window.innerHeight);
+	      document.body.querySelector("section[anim-sect]").appendChild(renderer.domElement);
+
+	      // Lighting
+	      const ambientLight = new THREE.AmbientLight(0x404040, 2); // Soft white light
+	      scene.add(ambientLight);
+
+	      const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+	      directionalLight.position.set(5, 10, 7.5);
+	      scene.add(directionalLight);
+
+	      // Controls
+	      controls = new OrbitControls(camera, renderer.domElement);
+	      controls.enableDamping = true;
+	      controls.dampingFactor = 0.05;
+	      controls.screenSpacePanning = false;
+	      controls.maxPolarAngle = Math.PI / 2;
+
+
+
+	      let trackScene = new THREE.Group();
+	      scene.add(trackScene);
+
+		  	let trackPerimeter = 4 * 2;
+		  	let trackWidth = 0.85 * 2;
+
+				const boxSize = (trackPerimeter - trackWidth / 2);
+				const skySphereGeo = new THREE.SphereGeometry(boxSize * 10, 64, 64); 
+				const skySphereMaterial = new THREE.ShaderMaterial({
+				  uniforms: {
+				    topColor: { value: new THREE.Color(0x191970) },
+				    bottomColor: { value: new THREE.Color(0xEE82EE) },
+				  },
+				  vertexShader: `
+				    varying vec3 vPosition;
+				    void main() {
+				      vPosition = position;
+				      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+				    }
+				  `,
+				  fragmentShader: `
+				    uniform vec3 topColor;
+				    uniform vec3 bottomColor;
+				    varying vec3 vPosition;
+				    void main() {
+				      float factor = (vPosition.y + 100.0) / 200.0;
+				      gl_FragColor = vec4(mix(bottomColor, topColor, factor), 1.0);
+				    }
+				  `,
+				  side: THREE.BackSide,
+				});
+				const skySphere = new THREE.Mesh(skySphereGeo, skySphereMaterial);
+				trackScene.add(skySphere);
+				 
+
+
+
+		    let texture = new THREE.TextureLoader().load(
+			  	'Dryv/violet-transparent-skyline.png');
+		    texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+			  texture.offset.set(0, 0);  
+		    texture.repeat.set(3, 1)
+				let skyLineMaterial = new THREE.MeshBasicMaterial({
+					  map: texture, 
+					  transparent: true, 
+					  emissive:  0xffffff,
+					  emissiveIntensity: .19,
+				  });
+				let skyLineMaterials = [skyLineMaterial, skyLineMaterial, skyLineMaterial, skyLineMaterial, skyLineMaterial, skyLineMaterial];
+				skyLineMaterials[2] = skyLineMaterials[3] = new THREE.MeshBasicMaterial({
+					  transparent: true,
+						color: 0x000000,
+						opacity: 0,
+				  });
+				let skyLineWidth = boxSize * 1.82;
+				let skyLineLength = boxSize * 1.82;
+				let skyLineGeo = new THREE.BoxGeometry(skyLineWidth, boxSize/4, skyLineLength);
+				const skyLine = new THREE.Mesh(skyLineGeo, skyLineMaterials);
+				trackScene.add(skyLine);  
+
+
+
+
+
+
+
+	      // Load .obj model
+	      const objLoader = new OBJLoader();
+	      objLoader.load(
+	        'Dryv/Koenigsegg.obj',  
+	        function (object) {
+	          object.scale.set(1/40, 1/40, 1/40); 
+
+	          object.position.set(0, 0, 0);
+	          trackScene.add(object);
+	          env.carObj = object;
+
+	          env.carObj2 = object.clone();
+	          trackScene.add(env.carObj2);
+
+				    designCar();
+	        },
+	        // Progress callback
+	        function (xhr) {
+	          //console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+	        },
+	        // Error callback
+	        function (error) {
+	          console.log('An error occurred while loading the OBJ file', error);
+	        }
+	      );
+
+
+
+				function createPlaneOld(){
+
+					let gs = [];
+					let letters = [ 
+					  [ // o
+					    [[-4, -1], [+2, -1], [+2, +1], [-2, +1], [-2, -3], ]
+					  ], 
+					]
+
+					let widthCurve = new THREE.CatmullRomCurve3([[0, 0], [1, 0.05], [5, 0.1], [9, 0.05], [10, 0]].map(p => {return new THREE.Vector3(p[0], p[1], 0)}) )
+
+					let pnt = new THREE.Vector3();
+					let tan = new THREE.Vector3();
+					let wdt = new THREE.Vector3();
+					let shear = new THREE.Matrix4().makeShear(0, 0, 0.25, 0, 0, 0);
+					letters.forEach(letter => {
+					  letter.forEach( path => {
+					    let pts = path.map(p => {return new THREE.Vector3(p[0], p[1], 0).applyMatrix4(shear)});
+					    let curve = new THREE.CatmullRomCurve3(pts, false, "centripetal");
+					    let g = new THREE.PlaneGeometry(1, 1, 100, 1);
+					    let pos = g.attributes.position;
+					    let n = pos.count / 2;
+					    for(let i = 0; i < n; i++){
+					      let k = i / (n - 1);
+					      widthCurve.getPointAt(k, wdt);
+					      curve.getPointAt(k, pnt);
+					      curve.getTangentAt(k, tan).setLength(wdt.y);
+					      pos.setXY( i, pnt.x-tan.y, pnt.y+tan.x );		
+					      pos.setXY( i+n, pnt.x+tan.y, pnt.y-tan.x );
+					    }
+					    gs.push(g);
+					  })
+					})
+
+					let g = mergeGeometries(gs);
+					let m = new THREE.MeshBasicMaterial({color: "#A32CC4"});
+					let o = new THREE.Mesh(g, m); 
+					env.curvePath = o;
+					o.rotation.x -= (Math.PI/2)/1.2;
+					o.rotation.z += (Math.PI/2)/0.7;
+					o.scale.x *= 7; o.scale.y *= 7; o.scale.z *= 7;
+					o.position.x += 8;
+					scene.add(o);
+				}
+
+				function animPlaneOld(){
+				//env.curvePath.rotation.x += (Math.PI/2)/15
+				//env.curvePath.rotation.z += (Math.PI/2)/15
+				requestAnimationFrame(animPlane)
+				}
+
+
+			  function createPlane(){
+
+					const curvePoints =  [
+						-8, -1, -8,  
+						+8, -1, -8, 
+						+8, -1, +8,
+						-8, -1, +8,
+						-8, -1, -8,  
+						];  
+
+					const pts = [];
+					for ( let i = 0; i < curvePoints.length; i += 3 ) {
+						pts.push( new THREE.Vector3( curvePoints[ i ], curvePoints[ i + 1 ], curvePoints[ i + 2 ] ) );
+						
+					}
+					const ls = 1400; // length segments
+					const ws = 5; // width segments 
+					const lss = ls + 1;
+					const wss = ws + 1;
+
+					const curve = new THREE.CatmullRomCurve3( pts );
+					const points = curve.getPoints( ls );
+					const len = curve.getLength( );
+					const lenList = curve.getLengths ( ls );
+
+					const faceCount = ls * ws * 2;
+					const vertexCount = lss * wss;
+
+					const indices = new Uint32Array( faceCount * 3 );
+					const vertices = new Float32Array( vertexCount * 3 );
+					const uvs = new Float32Array( vertexCount * 2 );
+
+					const g = new THREE.BufferGeometry( );
+					g.setIndex( new THREE.BufferAttribute( indices, 1 ) );	
+					g.setAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
+					g.setAttribute( 'uv', new THREE.BufferAttribute( uvs, 2 ) );
+
+					let idxCount = 0;
+					let a, b1, c1, c2;
+
+					for ( let j = 0; j < ls; j ++ ) {
+						for ( let i = 0; i < ws; i ++ ) {
+							// 2 faces / segment,  3 vertex indices
+							a =  wss * j + i;
+							b1 = wss * ( j + 1 ) + i;		// right-bottom
+							c1 = wss * ( j + 1 ) + 1 + i;
+						//  b2 = c1							// left-top
+							c2 = wss * j + 1 + i;
+							indices[ idxCount     ] = a; // right-bottom
+							indices[ idxCount + 1 ] = b1;
+							indices[ idxCount + 2 ] = c1; 
+							
+							indices[ idxCount + 3 ] = a; // left-top
+							indices[ idxCount + 4 ] = c1 // = b2,
+							indices[ idxCount + 5 ] = c2; 
+							
+							g.addGroup( idxCount, 6, i ); // write group for multi material
+							
+							idxCount += 6;
+						}
+					}
+
+					let uvIdxCount = 0;
+
+					for ( let j = 0; j < lss ; j ++ ) {
+						for ( let i = 0; i < wss; i ++ ) {
+							uvs[ uvIdxCount     ] = lenList[ j ] / len;
+							uvs[ uvIdxCount + 1 ] = i / ws;
+							
+							uvIdxCount += 2;
+						}
+					}
+
+					let x, y, z;
+					let posIdx = 0; // position index
+
+					let tangent;
+					const normal = new THREE.Vector3( );
+					const binormal = new THREE.Vector3( 0, 1, 0 );
+					 
+					const t = []; // tangents
+					const n = []; // normals
+					const b = []; // binormals
+
+					for ( let j = 0; j < lss; j ++ ) { 
+						tangent = curve.getTangent(  j / ls );
+						t.push( tangent.clone( ) );
+						
+						normal.crossVectors( tangent, binormal );
+						
+						normal.y = 0; // to prevent lateral slope of the road
+						
+						normal.normalize( );
+						n.push( normal.clone( ) );
+						
+						binormal.crossVectors( normal, tangent ); // new binormal
+						b.push( binormal.clone( ) );	
+					}
+
+					let trackBord = 0;
+					const dw = [ 
+						-(trackWidth+trackBord), -trackWidth/1.2, 
+						-0.05, 0.05, 
+						trackWidth/1.2, (trackWidth+trackBord)
+						]; // width from the center line
+
+					for ( let j = 0; j < lss; j ++ ) {  // length
+						for ( let i = 0; i < wss; i ++ ) { // width
+							x = points[ j ].x + dw[ i ] * n[ j ].x;
+							y = points[ j ].y;
+							z = points[ j ].z + dw[ i ] * n[ j ].z;		 
+							
+							vertices[ posIdx ] = x;
+							vertices[ posIdx + 1 ] = y;
+							vertices[ posIdx + 2 ] = z;
+							
+							posIdx += 3;
+						}
+					}
+
+					//const tex = new THREE.TextureLoader( ).load( 'CentralMarking.png' );
+					//tex.wrapS = THREE.RepeatWrapping;
+					//tex.repeat.set( ls * 2);
+					const parameters = {};
+					const glowMaterial = new THREE.ShaderMaterial({
+					  uniforms: {
+					    glowColor: { value: new THREE.Color(0xEE82EE) },  // Violet color
+					    intensity: { value: 4.0 },  // Controls the brightness
+					  },
+					  vertexShader: `
+				      varying vec3 vPosition;
+				      varying vec3 vNormal;
+
+				      void main() {
+				        vec4 modelPosition = modelMatrix * vec4(position, 1.0);
+				        gl_Position = projectionMatrix * viewMatrix * modelPosition;
+				        vec4 modelNormal = modelMatrix * vec4(normal, 0.0);
+				        vPosition = modelPosition.xyz;
+				        vNormal = modelNormal.xyz;
+
+				      }
+					  `,
+					  fragmentShader: `
+				      uniform vec3 glowColor;
+				      uniform float falloff;
+				      uniform float glowSharpness;
+				      uniform float glowInternalRadius;
+				      uniform float opacity;
+
+				      varying vec3 vPosition;
+				      varying vec3 vNormal;
+
+				      void main()
+				      {
+				        // Normal
+				        vec3 normal = normalize(vNormal);
+				        if(!gl_FrontFacing)
+				            normal *= - 1.0;
+				        vec3 viewDirection = normalize(cameraPosition - vPosition);
+				        float fresnel = dot(viewDirection, normal);
+				        fresnel = pow(fresnel, glowInternalRadius + 0.1);
+				        float falloff = smoothstep(0., falloff, fresnel);
+				        float fakeGlow = fresnel;
+				        fakeGlow += fresnel * glowSharpness;
+				        fakeGlow *= falloff;
+				        gl_FragColor = vec4(clamp(glowColor * fresnel, 0., 1.0), clamp(fakeGlow, 0., opacity));
+
+				        #include <tonemapping_fragment>
+				        #include <colorspace_fragment>
+				      } 
+					  `,
+					  side: THREE.DoubleSide,
+					  blending: THREE.AdditiveBlending,
+					  transparent: true,
+					});
+
+
+			    glowMaterial.uniforms = { 
+			      opacity: new THREE.Uniform(parameters.opacity !== undefined ? parameters.opacity : 1.0), 
+			      glowInternalRadius: new THREE.Uniform(parameters.glowInternalRadius !== undefined ? parameters.glowInternalRadius : 6.0), 
+			      glowSharpness: new THREE.Uniform(parameters.glowSharpness !== undefined ? parameters.glowSharpness : 0.5), 
+			      falloff: new THREE.Uniform(parameters.falloff !== undefined ? parameters.falloff : 0.1), 
+			      glowColor: new THREE.Uniform(parameters.glowColor !== undefined ? new THREE.Color(parameters.glowColor) : new THREE.Color("#00d5ff")),
+			    };
+					glowMaterial.setValues(parameters);
+    			glowMaterial.depthTest = parameters.depthTest !== undefined ? parameters.depthTest : false;
+    			glowMaterial.blending = parameters.blendMode !== undefined ? parameters.blendMode : THREE.AdditiveBlending;
+    			glowMaterial.transparent = true;
+    			glowMaterial.side = parameters.side !== undefined ? parameters.side : THREE.DoubleSide;
+
+					const material = [
+						new THREE.MeshBasicMaterial( { color: 0xaa33bb, side: THREE.DoubleSide  } ),
+						new THREE.MeshBasicMaterial( { color: 0x661188, side: THREE.DoubleSide  } ),
+						new THREE.MeshBasicMaterial( { color: 0xaa8844, side: THREE.DoubleSide } ),
+						new THREE.MeshBasicMaterial( { color: 0x661188, side: THREE.DoubleSide} ),
+						//glowMaterial,
+						new THREE.MeshBasicMaterial( { color: 0xaa33bb, side: THREE.DoubleSide} ),
+					];
+
+					const roadMesh = new THREE.Mesh( g, material );
+					roadMesh.position.x += trackPerimeter;
+					roadMesh.position.z += trackPerimeter;
+					trackScene.add( roadMesh );
+					//trackScene.rotation.y += Math.PI/3;
+					env.roadPath = roadMesh;
+
+
+					const M3 = new THREE.Matrix3( );
+					const M4 = new THREE.Matrix4( ); 
+
+					this.autoDriveOnPlane = function ( raceCar, whichCar = 1 ) { 
+						raceCar.trackPosCount = raceCar.trackPosCount ?? 0;
+						let iBlue = raceCar.trackPosCount;
+						if ( iBlue === lss ) iBlue = 0; 
+						
+						if ( iBlue == Math.floor(iBlue)){
+							M3.set( 
+								t[ iBlue ].x, b[ iBlue ].x, n[ iBlue ].x, 
+								t[ iBlue ].y, b[ iBlue ].y, n[ iBlue ].y, 
+								t[ iBlue ].z, b[ iBlue ].z, n[ iBlue ].z );
+							M4.setFromMatrix3( M3 );
+							raceCar.setRotationFromMatrix( M4 );  
+
+							let lastM4rot = raceCar.lastM4rot * -1 * -1;
+							raceCar.lastM4rot = raceCar.rotation.y; 
+
+							if (lastM4rot - raceCar.rotation.y < 0 )
+								raceCar.rotation.y -= Math.PI/2;
+						  else
+								raceCar.rotation.y += Math.PI/2;
+
+							let rP = (whichCar == 1 ? 0 : -1.0);
+							raceCar.position.set( 
+								points[ iBlue ].x + (0.5+rP) * n[ iBlue ].x + trackPerimeter, 
+								points[ iBlue ].y, 
+								points[ iBlue ].z + (0.5+rP) * n[ iBlue ].z + trackPerimeter 
+								);
+						}
+
+						iBlue += (whichCar == 1 ? 1 : 1.5);
+						raceCar.trackPosCount = iBlue;
+					} 
+			  }
+
+			  function adjustPlane(){
+			  	//env.roadPath.position.y -= 2; 
+			  }
+
+
+				let roadPlane = new createPlane();
+				animPlane();
+				adjustPlane();
+
+			  function animPlane(){
+					//env.roadPath.rotation.x += (Math.PI/2)/15
+					//env.roadPath.rotation.z += (Math.PI/2)/15
+			  	//env.roadPath.position.y -= 1/30;
+
+					//trackScene.scale.x +=.5/10;
+					//trackScene.scale.y +=.5/10;
+					//trackScene.scale.z +=.5/10; 
+
+					//trackScene.rotation.y += (Math.PI/2)/25
+					//trackScene.rotation.z = -(Math.PI/2)/2
+					//trackScene.rotation.z += (Math.PI/2)/25
+
+			  	if(env.carObj) 
+			  	roadPlane.autoDriveOnPlane(env.carObj, 1);
+			  	if(env.carObj2) 
+			  	roadPlane.autoDriveOnPlane(env.carObj2, 2);
+
+
+			  	if(false && env.carObj) {
+					camera.position.x = env.carObj.position.x +trackWidth * 1; 
+					camera.position.z = env.carObj.position.z + trackWidth * 1;
+				  }
+
+				  requestAnimationFrame(animPlane);
+				} 
+
+				trackScene.position.x -= 4;
+				trackScene.position.z -= 1;
+
+
+				skyLine.position.set(env.roadPath.position.x, -0, env.roadPath.position.z); 
+				camera.position.x = env.roadPath.position.x + trackPerimeter - trackWidth * .3; 
+				camera.position.z = env.roadPath.position.z + trackPerimeter - trackWidth * 2.9;
+
+
+
+	      // Handle window resize
+	      window.addEventListener('resize', onWindowResize, false);
+	    }
+
+	    function onWindowResize() {
+	      camera.aspect = window.innerWidth / window.innerHeight;
+	      camera.updateProjectionMatrix();
+	      renderer.setSize(window.innerWidth, window.innerHeight);
+	    }
+
+	    function animate() {
+	      requestAnimationFrame(animate); 
+	      controls.update(); 
+	      renderer.render(scene, camera);
+	    }
+
+	    init();
+	    animate();
+
+
+
+
+			function designCar(){
+				let colors = [0xff0000, 0xffff00, 0xffffff, 0x0000ff, 0x00ffff, 0xff00ff, 0x7744aa];
+				env.carObj.traverse((child) => {
+				  if (child.material 
+				  	&& child.material.length > 0) {
+				    child.material.map((mat, matInd)=>{ 
+				    	mat.color.setHex(colors[matInd]);
+				    	if(matInd==4) mat.color.setHex(0x441177); // body
+				    	if(matInd==2) mat.color.setHex(0x7744cc); // interior
+				    	if(matInd==1) mat.color.setHex(0xaa33bb); // lights
+				    	if(matInd==0) mat.color.setHex(0x441177); // bumper
+				    	if(matInd==5) mat.color.setHex(0x441177); // tires
+				    	if(matInd==3) mat.color.setHex(0x661188); // wiper
+				    });
+				  }
+				});
+				env.carObj2.traverse((child) => {
+				  if (child.material 
+				  	&& child.material.length > 0) {
+				    child.material = child.material.clone();
+				    child.material.map((mat, matInd)=>{ 
+				    	mat.color.setHex(colors[matInd]);
+				    	if(matInd==4) mat.color.setHex(0x661188); // body
+				    	if(matInd==2) mat.color.setHex(0x7744cc); // interior
+				    	if(matInd==1) mat.color.setHex(0xaa33bb); // lights
+				    	if(matInd==0) mat.color.setHex(0x661188); // bumper
+				    	if(matInd==5) mat.color.setHex(0x7744cc); // tires
+				    	if(matInd==3) mat.color.setHex(0x771199); // wiper
+				    });
+				  }
+				});
+			}
+
+	    function driftCar(dir){
+	    	let baseRot = -Math.PI/4.7;
+	    	if (!env.carObj) return;
+	    	if (env.carObj.rotation.y + dir > baseRot + 0.7 ) return;
+	    	if (env.carObj.rotation.y + dir < baseRot - 0.3 ) return;
+
+	    	env.carObj.rotation.y += dir;
+	    }
+
+
+
+		  let lastMouseX = 0;
+		  document.addEventListener('mousemove', function(event) {
+		    const currentMouseX = event.clientX; // Get the current X position of the mouse
+
+		    // Determine the direction of the mouse movement
+		    if (currentMouseX < lastMouseX) {
+		      // Mouse moved left
+		      driftCar(-0.1 / 5);
+		    } else if (currentMouseX > lastMouseX) {
+		      // Mouse moved right
+		      driftCar(+0.1 / 5);
+		    }
+
+		    // Update lastMouseX to the current position
+		    lastMouseX = currentMouseX;
+		  });
+
+	</script>
+
+</html>
