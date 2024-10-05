@@ -683,7 +683,7 @@ section[anim-sect] {
 								);
 						}
 						
-					  iBlue += 1.5 + raceCar.speedDiff ?? 0;
+					  iBlue += raceCar.speedDiff ?? 0;
 						raceCar.trackPosCount = iBlue;
 					} 
 
@@ -773,22 +773,29 @@ section[anim-sect] {
 					let frameCount = 0;
 					let fps, fpsInterval, startTime, nowTime, thenTime, elapsedTime;
 
-					fps = 15;
+					env.recordedFps = 0; env.freeFps = true;
+					fps = 15; 
 					fpsInterval = 1000/fps;
 					thenTime = Date.now();
 					startTime = thenTime;
 
 					let trackSceneAnim = function(){
-					  requestAnimationFrame(trackSceneAnim);
 
 					  nowTime = Date.now();
 					  elapsedTime = nowTime - thenTime;
 
-					  if(elapsedTime - fpsInterval) {
+					  if(elapsedTime > fpsInterval || env.freeFps) {
 					  	thenTime = nowTime - (elapsedTime % fpsInterval);
 					  	updatePlane();
+
+					  	env.recordedFps = 1000/elapsedTime;
 					  }
+					  //document.querySelector(".header-text-1").innerText = env.recordedFps;
+
+
+					  requestAnimationFrame(trackSceneAnim);
 					}
+
 					trackSceneAnim();
 				}
 
@@ -798,7 +805,6 @@ section[anim-sect] {
 				let roadPlane = new createPlane();
 				startTrackSceneAnim();
 				adjustPlane();
-
 
 				trackScene.position.x -= 4;
 				trackScene.position.z -= 1;
@@ -866,12 +872,12 @@ section[anim-sect] {
 
 
         
-				function setCarAudio(car, id){
+				function setCarAudio(car, id){ 
 					// Set Car Speed
 					if(!car.speedDiff)  
-					if(id==1) car.speedDiff = 3+0;
-					if(id==2) car.speedDiff = 3+2;
-					if(id==3) car.speedDiff = 2;
+					if(id==1) car.speedDiff = Math.floor(4 / 10 * env.recordedFps);
+					if(id==2) car.speedDiff = Math.floor(6 / 10 * env.recordedFps);
+					if(id==3) car.speedDiff = Math.floor(3 / 10 * env.recordedFps);
 
 					// Set Car Audio
 					car.speedByAudio = id == 2 ? (new Audio("speeding-swoosh.wav")) : (new Audio("fast-car-drive-by.wav"));
