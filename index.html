@@ -224,7 +224,7 @@ section[anim-sect] {
 		<header>
 			<nav>
 			    <img class="nav-logo" src=""></img>
-			    <span class="nav-title">Cars</span>
+			    <span class="nav-title">Choose car &nbsp; <i class="fas fa-arrow-right"> </i></span>
 			    <ul class="nav-links">
 			        <li><a href="">KyoSera</a></li>
 			        <li><a href="">Mustang</a></li>
@@ -238,10 +238,10 @@ section[anim-sect] {
 		</header>
 		<section pg-1>
 		    <div class="top-sect">
-		        <p class="header-text-1">DRYV  <br> COMFORTABLY.</p>
-		        <p class="header-text-2">Cars, vehicles, transport. Everything.</p>
+		        <p class="header-text-1">DRYV  <br> IMMERSIVELY.</p>
+		        <p class="header-text-2">With anybody, anyone, around the world</p>
 		        <p class="header-links">
-		            <a class="link-1">Contact now</a> 
+		            <a class="link-1">Choose Car &nbsp; &nbsp;<i class="fas fa-arrow-up"> </i></a> 
 		        </p>
 		    </div> 
 		</section> 
@@ -354,6 +354,8 @@ section[anim-sect] {
 					  transparent: true, 
 					  emissive:  0xffffff,
 					  emissiveIntensity: .19,
+						side: THREE.DoubleSide,
+						opacity: .01,
 				  });
 				let skyLineMaterials = [skyLineMaterial, skyLineMaterial, skyLineMaterial, skyLineMaterial, skyLineMaterial, skyLineMaterial];
 				skyLineMaterials[2] = skyLineMaterials[3] = new THREE.MeshBasicMaterial({
@@ -365,8 +367,35 @@ section[anim-sect] {
 				let skyLineLength = boxSize * 1.82;
 				let skyLineGeo = new THREE.BoxGeometry(skyLineWidth, boxSize/4, skyLineLength);
 				const skyLine = new THREE.Mesh(skyLineGeo, skyLineMaterials);
-				trackScene.add(skyLine);  
+				trackScene.add(skyLine); 
 
+
+
+				const skyLinePlaneWidth = boxSize * 2.5;
+				const skyLinePlaneMaterials =	new THREE.MeshStandardMaterial({ 
+					  color: 0x772299,// Dark purple color 
+					  emissive: 0x000000,
+					  roughness: 0.0, 
+					  metalness: 0.0, 
+					  side: THREE.DoubleSide,
+					  flatShading: true,
+					});
+				 
+				const skyLinePlaneGeo = new THREE.PlaneGeometry(skyLinePlaneWidth, skyLinePlaneWidth);
+				const skyLinePlane = new THREE.Mesh(skyLinePlaneGeo, skyLinePlaneMaterials);
+				skyLinePlane.rotation.x += Math.PI/2;
+				skyLinePlane.position.x += skyLinePlaneWidth/2;
+				skyLinePlane.position.z += skyLinePlaneWidth/2;
+				skyLinePlane.position.y -= 1.2 ;
+
+				trackScene.add(skyLinePlane); 	 
+
+
+				const mainSpotLight = new THREE.SpotLight(0xaacc99, 5)
+				mainSpotLight.position.set(0, 5, 0);
+				mainSpotLight.target = new THREE.Object3D(skyLinePlaneWidth, 1, skyLinePlaneWidth);
+
+				trackScene.add(mainSpotLight, mainSpotLight.target);
 
 
 
@@ -387,7 +416,11 @@ section[anim-sect] {
 	          env.carObj2 = object.clone();
 	          trackScene.add(env.carObj2);
 
+	          env.carObj3 = object.clone();
+	          trackScene.add(env.carObj3);
+
 				    designCar();
+				    driftCar(0);
 	        },
 	        // Progress callback
 	        function (xhr) {
@@ -397,64 +430,11 @@ section[anim-sect] {
 	        function (error) {
 	          console.log('An error occurred while loading the OBJ file', error);
 	        }
-	      );
+	      ); 
 
-
-
-				function createPlaneOld(){
-
-					let gs = [];
-					let letters = [ 
-					  [ // o
-					    [[-4, -1], [+2, -1], [+2, +1], [-2, +1], [-2, -3], ]
-					  ], 
-					]
-
-					let widthCurve = new THREE.CatmullRomCurve3([[0, 0], [1, 0.05], [5, 0.1], [9, 0.05], [10, 0]].map(p => {return new THREE.Vector3(p[0], p[1], 0)}) )
-
-					let pnt = new THREE.Vector3();
-					let tan = new THREE.Vector3();
-					let wdt = new THREE.Vector3();
-					let shear = new THREE.Matrix4().makeShear(0, 0, 0.25, 0, 0, 0);
-					letters.forEach(letter => {
-					  letter.forEach( path => {
-					    let pts = path.map(p => {return new THREE.Vector3(p[0], p[1], 0).applyMatrix4(shear)});
-					    let curve = new THREE.CatmullRomCurve3(pts, false, "centripetal");
-					    let g = new THREE.PlaneGeometry(1, 1, 100, 1);
-					    let pos = g.attributes.position;
-					    let n = pos.count / 2;
-					    for(let i = 0; i < n; i++){
-					      let k = i / (n - 1);
-					      widthCurve.getPointAt(k, wdt);
-					      curve.getPointAt(k, pnt);
-					      curve.getTangentAt(k, tan).setLength(wdt.y);
-					      pos.setXY( i, pnt.x-tan.y, pnt.y+tan.x );		
-					      pos.setXY( i+n, pnt.x+tan.y, pnt.y-tan.x );
-					    }
-					    gs.push(g);
-					  })
-					})
-
-					let g = mergeGeometries(gs);
-					let m = new THREE.MeshBasicMaterial({color: "#A32CC4"});
-					let o = new THREE.Mesh(g, m); 
-					env.curvePath = o;
-					o.rotation.x -= (Math.PI/2)/1.2;
-					o.rotation.z += (Math.PI/2)/0.7;
-					o.scale.x *= 7; o.scale.y *= 7; o.scale.z *= 7;
-					o.position.x += 8;
-					scene.add(o);
-				}
-
-				function animPlaneOld(){
-				//env.curvePath.rotation.x += (Math.PI/2)/15
-				//env.curvePath.rotation.z += (Math.PI/2)/15
-				requestAnimationFrame(animPlane)
-				}
 
 
 			  function createPlane(){
-
 					const curvePoints =  [
 						-8, -1, -8,  
 						+8, -1, -8, 
@@ -643,13 +623,24 @@ section[anim-sect] {
     			glowMaterial.transparent = true;
     			glowMaterial.side = parameters.side !== undefined ? parameters.side : THREE.DoubleSide;
 
+
+					const trackDarkMaterial = new THREE.MeshStandardMaterial({ 
+					  color: 0x441166,// Dark purple color 
+					  emissive: 0x000000,
+					  roughness: 0.0, 
+					  metalness: 0.0, 
+					  side: THREE.DoubleSide,
+					  flatShading: true,
+					});
+
+
+
 					const material = [
-						new THREE.MeshBasicMaterial( { color: 0xaa33bb, side: THREE.DoubleSide  } ),
-						new THREE.MeshBasicMaterial( { color: 0x661188, side: THREE.DoubleSide  } ),
-						new THREE.MeshBasicMaterial( { color: 0xaa8844, side: THREE.DoubleSide } ),
-						new THREE.MeshBasicMaterial( { color: 0x661188, side: THREE.DoubleSide} ),
-						//glowMaterial,
-						new THREE.MeshBasicMaterial( { color: 0xaa33bb, side: THREE.DoubleSide} ),
+						new THREE.MeshStandardMaterial( { color: 0xaa33ff, side: THREE.DoubleSide, roughness: 0.0, metalness: 0, flatShading: true, emissive: 0x000000,   } ),
+						trackDarkMaterial,  
+						new THREE.MeshStandardMaterial( { color: 0xaa8844, side: THREE.DoubleSide, emissive: 0x000000, flatShading: true, } ),
+						trackDarkMaterial,
+						new THREE.MeshStandardMaterial( { color: 0xaa33ff, side: THREE.DoubleSide, roughness: 0.0, metalness: 0, flatShading: true, emissive: 0x000000,   } ),
 					];
 
 					const roadMesh = new THREE.Mesh( g, material );
@@ -691,10 +682,42 @@ section[anim-sect] {
 								points[ iBlue ].z + (0.5+rP) * n[ iBlue ].z + trackPerimeter 
 								);
 						}
-
-						iBlue += (whichCar == 1 ? 1.5 * 3 : 1.5 * 4);
+						
+					  iBlue += 1.5 + raceCar.speedDiff ?? 0;
 						raceCar.trackPosCount = iBlue;
 					} 
+
+					this.addPointLights = function (  ) { 	
+						for ( let iBlue = 0; lss>iBlue; iBlue += 75 ){
+							let raceCar = new THREE.PointLight(0xbbaa88, 5);
+							trackScene.add(raceCar);
+
+							M3.set( 
+								t[ iBlue ].x, b[ iBlue ].x, n[ iBlue ].x, 
+								t[ iBlue ].y, b[ iBlue ].y, n[ iBlue ].y, 
+								t[ iBlue ].z, b[ iBlue ].z, n[ iBlue ].z );
+							M4.setFromMatrix3( M3 );
+							//raceCar.setRotationFromMatrix( M4 );  
+
+							let lastM4rot = raceCar.lastM4rot * -1 * -1;
+							raceCar.lastM4rot = raceCar.rotation.y; 
+
+							if (lastM4rot - raceCar.rotation.y < 0 )
+								raceCar.rotation.y -= Math.PI/2;
+						  else
+								raceCar.rotation.y += Math.PI/2;
+
+							let rP = 1;
+							raceCar.position.set( 
+								points[ iBlue ].x + (0.5+rP) * n[ iBlue ].x + trackPerimeter, 
+								points[ iBlue ].y, 
+								points[ iBlue ].z + (0.5+rP) * n[ iBlue ].z + trackPerimeter 
+								);
+						}
+					}
+
+					this.addPointLights();
+
 			  }
 
 			  function adjustPlane(){
@@ -715,14 +738,30 @@ section[anim-sect] {
 					//trackScene.scale.y +=.5/10;
 					//trackScene.scale.z +=.5/10; 
 
-					//trackScene.rotation.y += (Math.PI/2)/25
-					//trackScene.rotation.z = -(Math.PI/2)/2
+					//trackScene.rotation.y -= (Math.PI/2)/25
+					//trackScene.rotation.x -= (Math.PI/2)/25
 					//trackScene.rotation.z += (Math.PI/2)/25
 
 			  	if(env.carObj) 
 			  	roadPlane.autoDriveOnPlane(env.carObj, 1);
 			  	if(env.carObj2) 
 			  	roadPlane.autoDriveOnPlane(env.carObj2, 2);
+			  	if(env.carObj3) 
+			  	roadPlane.autoDriveOnPlane(env.carObj3, 3);
+
+			  	function playCarSpeedby(car, id){
+			  		if(!car) return;
+
+				    if( Math.abs(car.position.x - camera.position.x) < 4 )
+				    if( Math.abs(car.position.z - camera.position.z) < 4 )
+				    	car.playSpeedbySound();	 
+
+			  	}
+			  	playCarSpeedby(env.carObj, 0)
+			  	playCarSpeedby(env.carObj2)
+			  	playCarSpeedby(env.carObj3)
+
+
 
 
 			  	if(false && env.carObj) {
@@ -795,16 +834,45 @@ section[anim-sect] {
 				    });
 				  }
 				});
+
+
+        
+				function setCarAudio(car, id){
+					// Set Car Speed
+					if(!car.speedDiff)  
+					if(id==1) car.speedDiff = 3+0;
+					if(id==2) car.speedDiff = 3+2;
+					if(id==3) car.speedDiff = 2;
+
+					// Set Car Audio
+					car.speedByAudio = id == 2 ? (new Audio("speeding-swoosh.wav")) : (new Audio("fast-car-drive-by.wav"));
+					car.playSpeedbySound = function() {
+							if(!car.speedByAudio.paused) return;
+							//car.speedByAudio.playbackRate = 0.7 + car.speedDiff * 0.3;
+							car.speedByAudio.play();
+					}
+				}
+				setCarAudio(env.carObj, 1);
+				setCarAudio(env.carObj2, 2);
+				setCarAudio(env.carObj3, 3);
 			}
 
 	    function driftCar(dir){ 
-	    	if (!env.carObj) return;
-	    	env.carObj.rp = env.carObj.rp ?? -1;
-	    	if (env.carObj.rp + dir > 0 ) return;
-	    	if (env.carObj.rp + dir < -1 ) return;
+	    	let dC = (function(dir, car, lim){
+		    	if (!car) return;
+		    	car.rp = car.rp ?? lim;
+		    	if (car.rp + dir > lim + 0.5 ) return;
+		    	if (car.rp + dir < lim - 0.5 ) return;	   	
 
-	    	env.carObj.rp += dir/5;
+	    		car.rp += dir;	
+	    	});
+
+	    	dC(0, env.carObj , -1.0);
+	    	dC(0, env.carObj2, +0.5); 
+	    	dC(dir, env.carObj3, -1.5); 
 	    }
+
+
 
 
 
@@ -815,10 +883,10 @@ section[anim-sect] {
 		    // Determine the direction of the mouse movement
 		    if (currentMouseX < lastMouseX) {
 		      // Mouse moved left
-		      driftCar(-0.1 / 5);
+		      driftCar(-0.1 / 10);
 		    } else if (currentMouseX > lastMouseX) {
 		      // Mouse moved right
-		      driftCar(+0.1 / 5);
+		      driftCar(+0.1 / 10);
 		    }
 
 		    // Update lastMouseX to the current position
