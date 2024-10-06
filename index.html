@@ -359,9 +359,7 @@ section[anim-sect] {
 		    texture.repeat.set(3, 1)
 				let skyLineMaterial = new THREE.MeshBasicMaterial({
 					  map: texture, 
-					  transparent: true, 
-					  emissive:  0xffffff,
-					  emissiveIntensity: .19,
+					  transparent: true,  
 						side: THREE.DoubleSide,
 						opacity: .01,
 				  });
@@ -383,8 +381,8 @@ section[anim-sect] {
 				const skyLinePlaneMaterials =	new THREE.MeshStandardMaterial({ 
 					  color: 0x772299,// Dark purple color 
 					  emissive: 0x000000,
-					  roughness: 0.0, 
-					  metalness: 0.0, 
+					  roughness: 1.0, 
+					  metalness: 1.0, 
 					  side: THREE.DoubleSide,
 					  flatShading: true,
 					});
@@ -401,9 +399,9 @@ section[anim-sect] {
 
 				const mainSpotLight = new THREE.SpotLight(0xaacc99, 5)
 				mainSpotLight.position.set(0, 5, 0);
-				mainSpotLight.target = new THREE.Object3D(skyLinePlaneWidth, 1, skyLinePlaneWidth);
+				mainSpotLight.target = new THREE.Object3D(skyLinePlaneWidth, 2, skyLinePlaneWidth);
 
-				trackScene.add(mainSpotLight, mainSpotLight.target);
+				//trackScene.add(mainSpotLight, mainSpotLight.target);
 
 
 
@@ -635,8 +633,9 @@ section[anim-sect] {
 					const trackDarkMaterial = new THREE.MeshStandardMaterial({ 
 					  color: 0x441166,// Dark purple color 
 					  emissive: 0x000000,
-					  roughness: 0.0, 
-					  metalness: 0.0, 
+					  emissiveIntensity: .19,	
+					  roughness: 1.0, 
+					  metalness: 1.0, 
 					  side: THREE.DoubleSide,
 					  flatShading: true,
 					});
@@ -695,7 +694,11 @@ section[anim-sect] {
 						raceCar.trackPosCount = iBlue;
 					} 
 
-					this.addPointLights = function (  ) { 	
+					this.addPointLights = function (  ) {
+						// remove lights for mobile,for optimization
+					  env.device_is_mobile = /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop|BlackBerry/i.test(navigator.userAgent); 	
+					  if (env.device_is_mobile) return;
+
 						for ( let iBlue = 0; lss>iBlue; iBlue += 75 ){
 							let raceCar = new THREE.PointLight(0xbbaa88, 1*5, 0, 3);
 							trackScene.add(raceCar);
