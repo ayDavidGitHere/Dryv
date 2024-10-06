@@ -277,7 +277,7 @@ section[anim-sect] {
 	    import { OBJLoader } from 'OBJLoader';
 	    import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 
-	    let scene, camera, renderer, controls;
+	    let scene, camera, drivebyCamera, tpCamera, testBall, renderer, controls;
 
 
 	    let env = {};
@@ -288,7 +288,11 @@ section[anim-sect] {
 	      scene.background = new THREE.Color(0x221144); 
 
 	      // Camera
-	      camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+	      drivebyCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+	      tpCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+	      tpCamera.position.y += 1;
+
+	      camera = drivebyCamera;
 	      camera.position.z = 5;
 	      camera.position.x += 15;
 	      camera.position.z += 14;
@@ -322,6 +326,20 @@ section[anim-sect] {
 		  	let trackWidth = 0.85 * 2;
 
 				const boxSize = (trackPerimeter - trackWidth / 2);
+
+
+	      const testBallGeo = new THREE.BoxGeometry(1/7, 1/7, 1/5);
+				const testBallGeoMaterial =	new THREE.MeshStandardMaterial({ 
+					  color: 0xccaadd,// Dark purple color 
+					  emissive: 0x000000,
+					  roughness: 1.0, 
+					  metalness: 1.0, 
+					  side: THREE.DoubleSide,
+					  flatShading: true,
+					});
+				testBall = new THREE.Mesh(testBallGeo, testBallGeoMaterial);
+	      //trackScene.add(testBall);
+
 				const skySphereGeo = new THREE.SphereGeometry(boxSize * 10, 64, 64); 
 				const skySphereMaterial = new THREE.ShaderMaterial({
 				  uniforms: {
@@ -349,8 +367,6 @@ section[anim-sect] {
 				const skySphere = new THREE.Mesh(skySphereGeo, skySphereMaterial);
 				trackScene.add(skySphere);
 				 
-
-
 
 		    let texture = new THREE.TextureLoader().load(
 			  	'violet-transparent-skyline.png');
@@ -441,12 +457,19 @@ section[anim-sect] {
 
 
 			  function createPlane(){
+			  	let tP = trackPerimeter;
+			  	let sP = tP + tP/2;
 					const curvePoints =  [
-						-8, -1, -8,  
-						+8, -1, -8, 
-						+8, -1, +8,
-						-8, -1, +8,
-						-8, -1, -8,  
+						-tP, -1, -tP,  
+						+tP, -1, -tP, 
+						+tP, -1, +tP,
+						-tP, -1, +tP,
+
+						-tP, -1, 0,
+						-sP, -1, 0,
+						-sP, -1, -tP,  
+
+						-tP, -1, -tP,
 						];  
 
 					const pts = [];
@@ -561,73 +584,7 @@ section[anim-sect] {
 
 					//const tex = new THREE.TextureLoader( ).load( 'CentralMarking.png' );
 					//tex.wrapS = THREE.RepeatWrapping;
-					//tex.repeat.set( ls * 2);
-					const parameters = {};
-					const glowMaterial = new THREE.ShaderMaterial({
-					  uniforms: {
-					    glowColor: { value: new THREE.Color(0xEE82EE) },  // Violet color
-					    intensity: { value: 4.0 },  // Controls the brightness
-					  },
-					  vertexShader: `
-				      varying vec3 vPosition;
-				      varying vec3 vNormal;
-
-				      void main() {
-				        vec4 modelPosition = modelMatrix * vec4(position, 1.0);
-				        gl_Position = projectionMatrix * viewMatrix * modelPosition;
-				        vec4 modelNormal = modelMatrix * vec4(normal, 0.0);
-				        vPosition = modelPosition.xyz;
-				        vNormal = modelNormal.xyz;
-
-				      }
-					  `,
-					  fragmentShader: `
-				      uniform vec3 glowColor;
-				      uniform float falloff;
-				      uniform float glowSharpness;
-				      uniform float glowInternalRadius;
-				      uniform float opacity;
-
-				      varying vec3 vPosition;
-				      varying vec3 vNormal;
-
-				      void main()
-				      {
-				        // Normal
-				        vec3 normal = normalize(vNormal);
-				        if(!gl_FrontFacing)
-				            normal *= - 1.0;
-				        vec3 viewDirection = normalize(cameraPosition - vPosition);
-				        float fresnel = dot(viewDirection, normal);
-				        fresnel = pow(fresnel, glowInternalRadius + 0.1);
-				        float falloff = smoothstep(0., falloff, fresnel);
-				        float fakeGlow = fresnel;
-				        fakeGlow += fresnel * glowSharpness;
-				        fakeGlow *= falloff;
-				        gl_FragColor = vec4(clamp(glowColor * fresnel, 0., 1.0), clamp(fakeGlow, 0., opacity));
-
-				        #include <tonemapping_fragment>
-				        #include <colorspace_fragment>
-				      } 
-					  `,
-					  side: THREE.DoubleSide,
-					  blending: THREE.AdditiveBlending,
-					  transparent: true,
-					});
-
-
-			    glowMaterial.uniforms = { 
-			      opacity: new THREE.Uniform(parameters.opacity !== undefined ? parameters.opacity : 1.0), 
-			      glowInternalRadius: new THREE.Uniform(parameters.glowInternalRadius !== undefined ? parameters.glowInternalRadius : 6.0), 
-			      glowSharpness: new THREE.Uniform(parameters.glowSharpness !== undefined ? parameters.glowSharpness : 0.5), 
-			      falloff: new THREE.Uniform(parameters.falloff !== undefined ? parameters.falloff : 0.1), 
-			      glowColor: new THREE.Uniform(parameters.glowColor !== undefined ? new THREE.Color(parameters.glowColor) : new THREE.Color("#00d5ff")),
-			    };
-					glowMaterial.setValues(parameters);
-    			glowMaterial.depthTest = parameters.depthTest !== undefined ? parameters.depthTest : false;
-    			glowMaterial.blending = parameters.blendMode !== undefined ? parameters.blendMode : THREE.AdditiveBlending;
-    			glowMaterial.transparent = true;
-    			glowMaterial.side = parameters.side !== undefined ? parameters.side : THREE.DoubleSide;
+					//tex.repeat.set( ls * 2); 
 
 
 					const trackDarkMaterial = new THREE.MeshStandardMaterial({ 
@@ -679,8 +636,8 @@ section[anim-sect] {
 
 							if (lastM4rot - raceCar.rotation.y < 0 )
 								raceCar.rotation.y -= Math.PI/2;
-						  else
-								raceCar.rotation.y += Math.PI/2;
+						  else 
+								raceCar.rotation.y += Math.PI/2; 
 
 							let rP = raceCar.rp ?? 0;
 							raceCar.position.set( 
@@ -802,7 +759,7 @@ section[anim-sect] {
 
 					  	env.recordedFps = 1000/elapsedTime;
 					  }
-					  document.querySelector(".header-text-3").innerText = Math.round(env.recordedFps);
+					  //document.querySelector(".header-text-3").innerText = Math.round(env.recordedFps);
 
 
 					  requestAnimationFrame(trackSceneAnim);
@@ -839,10 +796,47 @@ section[anim-sect] {
 	      renderer.setSize(window.innerWidth, window.innerHeight);
 	    }
 
+	    function updateCamera() {
+	    	return;
+	    	// Update ThirdPerson Camera
+	    	if (!env.carObj) return;
+	    	camera = tpCamera;
+
+	    	let car = env.carObj;
+
+
+
+				let carQuaternion = car.quaternion.clone(); 
+				let zeroYQuaternion = new THREE.Quaternion();  
+				// Set the Y rotation to 0 while preserving the X and Z rotations
+				zeroYQuaternion.setFromEuler(new THREE.Euler(car.rotation.x, 0, car.rotation.z)); 
+				let carRotY = carQuaternion.angleTo(zeroYQuaternion);
+
+	    	tpCamera.position.x = car.position.x +  2 //* Math.cos(carRotY);
+	    	tpCamera.position.z = car.position.z +  2 //* Math.sin(carRotY);
+
+	    	testBall.position.x = car.position.x + 1.5 * Math.cos(carRotY);
+	    	testBall.position.z = car.position.z + 1.5 * Math.sin(carRotY);
+	    	testBall.rotation.y = carRotY;//car.rotation.y < 0 ? (car.rotation.y - Math.PI/2) : car.rotation.y
+	    	
+	    	tpCamera.lookAt(car.position);
+	    	
+	    	/*
+	    	document.querySelector(".header-text-3").innerText //= (car.rotation.x) + "-" + (car.rotation.y) + "_" + (car.rotation.z)
+	    	  //= 2 * Math.sin(car.rotation.y) 
+	    	  = carRotY
+	    	*/
+	    	;
+        
+        let cry = Math.atan(Math.sin(car.rotation.y) / Math.cos(car.rotation.y))
+	    	document.querySelector(".header-text-3").style.transform = `rotate(${180/Math.PI*cry}deg)`;; 
+	    }
+
 	    function animate() {
 	      requestAnimationFrame(animate); 
 	      controls.update(); 
 	      renderer.render(scene, camera);
+	      updateCamera();
 	    }
 
 	    init();
@@ -852,35 +846,6 @@ section[anim-sect] {
 
 
 			function designCar(){
-				let colors = [0xff0000, 0xffff00, 0xffffff, 0x0000ff, 0x00ffff, 0xff00ff, 0x7744aa];
-				env.carObj.traverse((child) => {
-				  if (child.material 
-				  	&& child.material.length > 0) {
-				    child.material.map((mat, matInd)=>{ 
-				    	mat.color.setHex(colors[matInd]);
-				    	if(matInd==4) mat.color.setHex(0x441177); // body
-				    	if(matInd==2) mat.color.setHex(0x7744cc); // interior
-				    	if(matInd==1) mat.color.setHex(0xaa33bb); // lights
-				    	if(matInd==0) mat.color.setHex(0x441177); // bumper
-				    	if(matInd==5) mat.color.setHex(0x441177); // tires
-				    	if(matInd==3) mat.color.setHex(0x661188); // wiper
-				    });
-				  }
-				});
-				env.carObj2.traverse((child) => {
-				  if (child.material 
-				  	&& child.material.length > 0) { 
-				    child.material.map((mat, matInd)=>{ 
-				    	mat.color.setHex(colors[matInd]);
-				    	if(matInd==4) mat.color.setHex(0x661188); // body
-				    	if(matInd==2) mat.color.setHex(0x7744cc); // interior
-				    	if(matInd==1) mat.color.setHex(0xaa33bb); // lights
-				    	if(matInd==0) mat.color.setHex(0x661188); // bumper
-				    	if(matInd==5) mat.color.setHex(0x7744cc); // tires
-				    	if(matInd==3) mat.color.setHex(0x771199); // wiper
-				    });
-				  }
-				});
 
 
         function registerCar(car, id){
@@ -894,6 +859,42 @@ section[anim-sect] {
 				registerCar(env.carObj, 1);
 				registerCar(env.carObj2, 2);
 				registerCar(env.carObj3, 3);
+
+
+
+				let colors = null;
+					colors = [0xff0000, 0xffff00, 0xffffff, 0x0000ff, 0x00ffff, 0xff00ff, 0x7744aa, ];
+
+				env.cars.map(car=>{
+					if(car.cid == 1)
+					colors = [0x330033, 0x4b004b, 0x660066, 0x800080, 0x990099, 0xb300b3, 0xcc00cc];
+
+					if(car.cid == 2)
+					colors = [0x8B0000, 0xA52A2A, 0xB22222, 0x7B241C, 0x800000, 0x5C0A0A, 0x4B0000];;
+				
+					if(car.cid == 3)
+					colors = [0x001133, 0x002266, 0x003399, 0x001144, 0x001133, 0x002244, 0x002244];
+					// 4 = Car Texture, 6 = Rear Lights, 1 = WindowGlass, 5 = Tires
+          
+          console.log("---")
+					car.traverse((child) => {
+					  if (child.material 
+					  	&& child.material.length > 0) { 
+					    for (let i=0; child.material.length>i; i++){
+					    	let matInd = i;
+					    	let mat = child.material[matInd].clone();
+
+					    	mat.color.setHex(colors[matInd]);
+					    	mat.reflectivity = 1;
+					    	mat.shininess = 1; 
+					    	console.log(i, mat)
+					    	child.material[matInd] = mat; 
+					    };
+					  }
+					}); 
+
+				}); //EO env.cars.map
+
 			}
 
 
