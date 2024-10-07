@@ -76,8 +76,7 @@ header nav {
 
 	flex-flow: row wrap;
 	justify-content: space-between; 
-	position: fixed; top: 0px;
-	z-index: 2;
+	position: fixed; top: 0px; 
 	background-color: transparent;
 } 
 
@@ -87,6 +86,10 @@ body[footer-in-view] header nav {
 
 highlight {
 	color: var(--col-accent);
+}
+
+header {
+  z-index: 2;
 }
 
 header nav img.nav-logo {
@@ -145,6 +148,8 @@ section[pg-1] {
 	padding-left: 12.5%;
 	padding-right: 12.5%;
 	padding-top: calc(80px); 
+  
+	pointer-events: none;
 }
 
 
@@ -154,6 +159,8 @@ section[pg-1] .top-sect {
 	box-sizing: border-box;  
 	padding-top: 5%;
 	text-align: center;
+
+	z-index: 1;
 }
 
 section[pg-1] .top-sect .header-text{
@@ -163,6 +170,8 @@ section[pg-1] .top-sect .header-text{
 	margin: 0;
 	padding: 0;
 	color: var(--col-secondary);
+
+	pointer-events: auto;
 }
 
 section[pg-1] .top-sect .header-text-1{
@@ -180,6 +189,8 @@ section[pg-1] .top-sect .header-text-3{
 
 section[pg-1] .top-sect .header-links {
 	margin-top: 40px;
+
+	pointer-events: auto;
 }
 
 section[pg-1] .top-sect .link-1 {
@@ -218,7 +229,6 @@ section[anim-sect] {
 	width: 100%; height: 100%;
 	box-sizing: border-box;
 	background-color: var(--col-accent-2);
-	z-index: -1;
 }
 
 
@@ -301,6 +311,7 @@ section[anim-sect] {
 	      renderer = new THREE.WebGLRenderer({ antialias: true });
 	      renderer.setSize(window.innerWidth, window.innerHeight);
 	      document.body.querySelector("section[anim-sect]").appendChild(renderer.domElement);
+	      addAnimSectElement();
 
 	      // Lighting
 	      const ambientLight = new THREE.AmbientLight(0x404040, 2); // Soft white light
@@ -728,7 +739,8 @@ section[anim-sect] {
 			  	playCarSpeedby(env.carObj3)
 
 
-
+			  	// Update Camera
+					camera.position.y = 0 + (env.drivebyCameraControlValue ?? 0 / 1) * 5;
 
 			  	if(false && env.carObj) {
 					camera.position.x = env.carObj.position.x +trackWidth * 1; 
@@ -839,6 +851,66 @@ section[anim-sect] {
 	      updateCamera();
 	    }
 
+			function addAnimSectElement() {
+			  let overlay = document.createElement('div');
+			  document.body.querySelector("section[anim-sect]").appendChild(overlay);
+			  overlay.style.width = "100%";
+			  overlay.style.height = "100%";
+			  overlay.style.position = "absolute";
+			  overlay.style.top = 0;
+			  overlay.style.left = 0;
+
+			  overlay.innerHTML = `
+			    <div 
+			      class="drivebyCamera-control" 
+			      style="width: 75px; height:150px; border: 0.5px solid white; border-radius: 10px; padding: 5px; box-sizing: border-box; position: absolute; right: 20px; bottom: 20px;">
+			      <div 
+			        class="dragger"
+			        style="width: calc(100% - 10px); height:50%; background-color: white; border-radius: 10px; box-sizing: border-box; position: absolute; left: 5px; bottom: 5px;">
+			        <span style="display: inline-block; text-align: center; color: midnightblue; font-size: 12px; width: 100%; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); ">DRAG CAMERA</span>
+			      </div>
+			    </div>
+			  `;
+
+			  const control = overlay.querySelector('.drivebyCamera-control');
+			  const dragger = control.querySelector('.dragger');
+
+			  // Drag functionality
+			  let isDragging = false;
+			  let startY, draggerStartY;
+			  let draggerMargin = 5;
+
+			  dragger.addEventListener('mousedown', function (event) {
+			    isDragging = true;
+			    startY = event.clientY;
+			    draggerStartY = dragger.offsetTop;
+			    document.body.style.userSelect = 'none'; // Prevent text selection
+			  });
+
+			  document.addEventListener('mousemove', function (event) {  
+			    if (isDragging) {
+			      let deltaY = event.clientY - startY;
+			      let controlOffsetHeight = control.offsetHeight - draggerMargin * 2; 
+			      let newTop = Math.max(draggerMargin, Math.min(controlOffsetHeight - dragger.offsetHeight, draggerStartY + deltaY));
+			      dragger.style.bottom = 'auto'; // Clear bottom style since we're positioning by top
+			      dragger.style.top = newTop + 'px';
+
+			      // Calculate percentage dragged
+			      let dragPercentage = newTop / (controlOffsetHeight - dragger.offsetHeight);
+			      env.drivebyCameraControlValue = 1 - dragPercentage; 
+			    }
+			  });
+
+			  document.addEventListener('mouseup', function () {  console.log("mouseup");
+			    isDragging = false;
+			    document.body.style.userSelect = ''; // Restore text selection
+			  });
+
+			}
+
+
+
+
 	    init();
 	    animate();
 
@@ -876,7 +948,7 @@ section[anim-sect] {
 					colors = [0x001133, 0x002266, 0x003399, 0x001144, 0x001133, 0x002244, 0x002244];
 					// 4 = Car Texture, 6 = Rear Lights, 1 = WindowGlass, 5 = Tires
           
-          console.log("---")
+          //console.log("---")
 					car.traverse((child) => {
 					  if (child.material 
 					  	&& child.material.length > 0) { 
@@ -887,14 +959,13 @@ section[anim-sect] {
 					    	mat.color.setHex(colors[matInd]);
 					    	mat.reflectivity = 1;
 					    	mat.shininess = 1; 
-					    	console.log(i, mat)
+					    	//console.log(i, mat)
 					    	child.material[matInd] = mat; 
 					    };
 					  }
 					}); 
 
 				}); //EO env.cars.map
-
 			}
 
 
@@ -925,7 +996,10 @@ section[anim-sect] {
 				car.playSpeedbySound = function() {
 						if(!car.speedByAudio.paused) return;
 						//car.speedByAudio.playbackRate = 0.7 + car.speedDiff * 0.3;
+						try{
 						car.speedByAudio.play();
+					  }
+						catch(e){}
 				}
 			}
 
